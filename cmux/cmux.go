@@ -27,9 +27,12 @@ func main() {
 	cmd := exec.Command(tmuxbin, tmuxlsarg...)
 	cmdout, _ = cmd.Output()
 	sess = strings.Split(strings.TrimRight(string(cmdout), "\n"), "\n")
-	if len(sess) == 1 {
-		userval = 0
-	} else {
+	switch len(sess) {
+	case 1:
+		tmuxconnarg = append(tmuxconnarg, "attach", "-t", sess[0])
+	case 0:
+		break
+	default:
 		fmt.Println("Index 	Session")
 		fmt.Println("==================")
 		for idx, val := range sess {
@@ -42,8 +45,8 @@ func main() {
 			fmt.Println("Unable to parse user input")
 			return
 		}
+		tmuxconnarg = append(tmuxconnarg, "attach", "-t", sess[userval])
 	}
-	tmuxconnarg = append(tmuxconnarg, sess[userval])
 
 	err = syscall.Exec(tmuxbin, tmuxconnarg, env)
 	if err != nil {
