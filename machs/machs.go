@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"syscall"
 
@@ -49,6 +50,7 @@ func main() {
 	for key, _ := range mymachs {
 		keyarr = append(keyarr, key)
 	}
+	sort.Strings(keyarr)
 	fmt.Println("Index	Machine")
 	fmt.Println("===============")
 	for idx, val := range keyarr {
