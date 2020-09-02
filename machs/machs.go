@@ -67,6 +67,8 @@ func main() {
 	// Construct args of ssh command.
 	// Use syscall.Exec to replace the running process itself
 	mycmd := []string{"-X"}
+	// We would like to make sure we send keepalive to the ssh server
+	mycmd = append(mycmd, "-o ServerAliveInterval=300 -o ServerAliveCountMax=10")
 	if mymachs[keyarr[userval]].User != "" {
 		mycmd = append(mycmd, mymachs[keyarr[userval]].User+"@"+mymachs[keyarr[userval]].Ip)
 	} else {
